@@ -16,7 +16,7 @@ const ChatComponent = () => {
             return;
         }
 
-        let url = `http://localhost:5555/${chatUser.userType}_rooms`;
+        let url = `/${chatUser.userType}_rooms`;
         console.log(chatUser)
         // if (chatUser.userType === 'user') {
         //   url += `user_rooms/`;
@@ -55,8 +55,13 @@ const handleChatRoomSelect = (roomId, volunteerId) => {
 };
 
 const handleBackToHome = () => {
-  navigate('/user_home');
+  if (chatUser.userType === 'volunteer') {
+    navigate('/volunteer_home');
+  } else {
+    navigate('/user_home');
+  }
 };
+
 
   return (
     <div className="chat-rooms-container">

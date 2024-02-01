@@ -28,7 +28,7 @@ const ChatRoom = () => {
 
   useEffect(() => {
     // Initialize the socket inside useEffect
-    socketRef.current = io('http://localhost:5555', {
+    socketRef.current = io(process.env.DATABASE_URI, {
       query: { token: localStorage.getItem('jwt_token') },
       transports: ['websocket'] // Force WebSocket transport
     });
@@ -49,7 +49,7 @@ const ChatRoom = () => {
 
       const fetchMessages = async () => {
         try {
-          const response = await fetch(`http://localhost:5555/chat_rooms/${chatRoomId}/messages`, {
+          const response = await fetch(`/chat_rooms/${chatRoomId}/messages`, {
             method: 'GET',
             headers: {
               'Content-Type': 'application/json',
@@ -110,8 +110,13 @@ const handleCloseSnackbar = () => {
 
 
 const handleBackToHome = () => {
-  navigate('/user_home');
+  if (chatUser.userType === 'volunteer') {
+    navigate('/volunteer_home');
+  } else {
+    navigate('/user_home');
+  }
 };
+
   return (
     <div className="chat-room-container">
       <h3>Chat Room</h3>

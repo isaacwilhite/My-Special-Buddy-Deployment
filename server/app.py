@@ -3,6 +3,7 @@
 # Remote library imports
 from flask import Flask, render_template, request, make_response, session, jsonify, redirect, url_for, json
 from flask_restful import Resource
+import traceback
 from datetime import datetime
 from models import db, User, Volunteer, Message, ChatRoom
 from sqlalchemy import text
@@ -332,12 +333,13 @@ class CreateVolunteer(Resource):
             db.session.commit()
 
             jwt = create_access_token(identity=new_volunteer.id)
-            serialized_volunteer = new_volunteer.to_dict(rules=('-_password_hash',))
+            serialized_volunteer = new_volunteer.to_dict()
+            print(serialized_volunteer)
             return {"token": jwt, "volunteer": serialized_volunteer}, 201
-
         except Exception as e:
             db.session.rollback()
-            return make_response({'Error': f'Could not create new volunteer: {str(e)}'}, 400)
+            app.logger.error(f"CreateVolunteer Error: {e}, {type(e).__name__}, {traceback.format_exc()}")
+            return make_response({'Error': f'Could not create new volunteer: {str(e)}'}, 500)
 
 
 
@@ -493,6 +495,11 @@ def on_join(data):
 #         disconnect()
 #         return
     # Further processing with the token
+
+@app.route('/', defaults={'path': ''})
+@app.route('/<path:path>')
+def catch_all(path):
+    return render_template("index.html")
 
 
 if __name__ == '__main__':

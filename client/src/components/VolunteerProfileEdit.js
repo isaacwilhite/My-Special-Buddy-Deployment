@@ -5,7 +5,7 @@ import { useChatContext } from './ChatContext';
 import { useNavigate } from 'react-router-dom';
 import CustomSnackbar from './CustomSnackbar';
 
-const UserProfileEdit = () => {
+const VolunteerProfileEdit = () => {
   const { chatUser, setChatUser } = useChatContext();
   const navigate = useNavigate()
   const [isSnackbarOpen, setSnackbarOpen] = useState(false);
@@ -44,7 +44,7 @@ const UserProfileEdit = () => {
     }),
     onSubmit: (values) => {
       // Send PUT or PATCH request to update user information
-      fetch(`http://localhost:5555/volunteer`, {
+      fetch(`/volunteer`, {
         method: 'PATCH',
         headers: {
           "Content-Type": "application/json",
@@ -75,7 +75,7 @@ const UserProfileEdit = () => {
   const handleDeleteAccount = () => {
     const confirmDelete = window.confirm("Are you sure you want to delete your account? This action cannot be undone.");
     if (confirmDelete) {
-      fetch(`http://localhost:5555/volunteer`, {
+      fetch(`/volunteer`, {
         method: 'DELETE',
         headers: {
           'Authorization': `Bearer ${localStorage.getItem('jwt_token')}`
@@ -98,7 +98,7 @@ const UserProfileEdit = () => {
   };
 
   const handleBackToHome = () => {
-    navigate('/user_home');
+    navigate('/volunteer_home');
   };
 
   const handleCloseSnackbar = () => {
@@ -106,7 +106,7 @@ const UserProfileEdit = () => {
   };
 
   return (
-    <form onSubmit={formik.handleSubmit}>
+    <form onSubmit={formik.handleSubmit} className="profile-form">
       <input
         id="name"
         name="name"
@@ -128,9 +128,10 @@ const UserProfileEdit = () => {
         onChange={formik.handleChange}
         value={formik.values.location}
       />
-      <button type="submit">Update Profile</button>
-      <button type="button" onClick={handleDeleteAccount}>Delete Account</button>
-      <button onClick={handleBackToHome}>Back to Home</button>
+
+      <button type="submit" className="update-button">Update Profile</button>
+      <button type="button" onClick={handleDeleteAccount} className="delete-button">Delete Account</button>
+      <button onClick={handleBackToHome} className="back-button">Back to Home</button>
       <CustomSnackbar 
         open={isSnackbarOpen} 
         handleClose={handleCloseSnackbar} 
@@ -141,4 +142,4 @@ const UserProfileEdit = () => {
   );
 };
 
-export default UserProfileEdit;
+export default VolunteerProfileEdit;

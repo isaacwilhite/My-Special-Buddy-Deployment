@@ -48,7 +48,7 @@ const VolunteerSignup = () => {
       location: Yup.string().required('Required')
     }),
     onSubmit: (values, { setSubmitting }) => {
-      fetch('http://localhost:5555/signup/volunteer', {
+      fetch('/signup/volunteer', {
         method: 'POST',
         headers: {
           "Content-Type": "application/json",
@@ -65,7 +65,7 @@ const VolunteerSignup = () => {
       })
       .then(() => {
         // Continue with the login process as the signup was successful
-        return fetch('http://localhost:5555/login/volunteer', {
+        return fetch('/login/volunteer', {
           method: 'POST',
           headers: {
             "Content-Type": "application/json",

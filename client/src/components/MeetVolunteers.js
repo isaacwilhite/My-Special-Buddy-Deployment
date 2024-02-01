@@ -26,7 +26,7 @@ const MeetVolunteers = () => {
       const token = localStorage.getItem('jwt_token');
       const fetchVolunteers = async () => {
         try {
-          const response = await fetch('http://localhost:5555/volunteers', {
+          const response = await fetch('/volunteers', {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -48,7 +48,7 @@ const MeetVolunteers = () => {
     const onCreateChatRoom = async (volunteerId) => {
       const token = localStorage.getItem('jwt_token'); // Retrieve the stored token
       try {
-        const response = await fetch('http://localhost:5555/create_chat_room', {
+        const response = await fetch('/create_chat_room', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -77,29 +77,29 @@ const MeetVolunteers = () => {
       setSnackbarOpen(false);
     };
 
-    const handlePictureSelect = (volunteerName) => {
-      switch (volunteerName) {
-          case "Ashley":
-              return ashley;
-          case "Autumn":
-              return autumn;
-          case "Kai":
-              return kai;
-          case "Ellie":
-              return ellie;
-          case "Gavin":
-              return gavin;
-          default:
-              return "defaultImagePath"; // Replace with a default image path if needed
-      }
-  };
+  //   const handlePictureSelect = (volunteerName) => {
+  //     switch (volunteerName) {
+  //         case "Ashley":
+  //             return ashley;
+  //         case "Autumn":
+  //             return autumn;
+  //         case "Kai":
+  //             return kai;
+  //         case "Ellie":
+  //             return ellie;
+  //         case "Gavin":
+  //             return gavin;
+  //         default:
+  //             return "defaultImagePath"; // Replace with a default image path if needed
+  //     }
+  // };
   
     return (
       <div className="volunteer-container">
         <button onClick={handleBackToHome} className="back-home-button">Back to Home</button> {/* Back to Home button */}
         {volunteers.map((volunteer) => (
           <div key={volunteer.id} className="volunteer-profile">
-            <img src={handlePictureSelect(volunteer.name)} alt={volunteer.name} />
+            {/* <img src={handlePictureSelect(volunteer.name)} alt={volunteer.name} /> */}
             <h3>{volunteer.name}</h3>
             <p>Bio: {volunteer.bio}</p>
             <p>Location: {volunteer.location}</p>

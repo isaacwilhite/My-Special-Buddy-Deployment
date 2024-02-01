@@ -51,7 +51,7 @@ const UserSignup = () => {
       favorite_activities: Yup.string().required('Required')
     }),
     onSubmit: (values, { setSubmitting, setFieldError }) => {
-      fetch('http://localhost:5555/signup/user', {
+      fetch('/signup/user', {
         method: 'POST',
         headers: {
           "Content-Type": "application/json",
@@ -68,7 +68,7 @@ const UserSignup = () => {
       })
       .then(() => {
         // Continue with the login process as the signup was successful
-        return fetch('http://localhost:5555/login/user', {
+        return fetch('/login/user', {
           method: 'POST',
           headers: {
             "Content-Type": "application/json",

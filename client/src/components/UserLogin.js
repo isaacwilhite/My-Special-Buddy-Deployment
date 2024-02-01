@@ -36,7 +36,7 @@ const UserLogin = () => {
     },
     validationSchema: formSchema,
     onSubmit: (values) => {
-      fetch('http://localhost:5555/login/user', {
+      fetch('/login/user', {
         method: 'POST',
         headers: {
           "Content-Type": "application/json",

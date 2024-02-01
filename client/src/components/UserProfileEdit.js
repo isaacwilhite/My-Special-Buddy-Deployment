@@ -49,7 +49,7 @@ const UserProfileEdit = () => {
     }),
     onSubmit: (values) => {
       // Send PUT or PATCH request to update user information
-      fetch(`http://localhost:5555/user`, {
+      fetch(`/user`, {
         method: 'PATCH',
         headers: {
           "Content-Type": "application/json",
@@ -82,7 +82,7 @@ const UserProfileEdit = () => {
   const handleDeleteAccount = () => {
     const confirmDelete = window.confirm("Are you sure you want to delete your account? This action cannot be undone.");
     if (confirmDelete) {
-      fetch(`http://localhost:5555/user`, {
+      fetch(`/user`, {
         method: 'DELETE',
         headers: {
           'Authorization': `Bearer ${localStorage.getItem('jwt_token')}`
@@ -148,6 +148,8 @@ const UserProfileEdit = () => {
         onChange={formik.handleChange}
         value={formik.values.favorite_activities}
       />
+
+
       <button type="submit" className="update-button">Update Profile</button>
       <button type="button" onClick={handleDeleteAccount} className="delete-button">Delete Account</button>
       <button onClick={handleBackToHome} className="back-button">Back to Home</button>

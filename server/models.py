@@ -59,6 +59,8 @@ class Volunteer(db.Model, SerializerMixin):
             "name": self.name,
             "bio": self.bio,
             "location": self.location,
+            "created_at": self.created_at.isoformat() if self.created_at else None
+            # Convert datetime to string
         }
 
     @hybrid_property
