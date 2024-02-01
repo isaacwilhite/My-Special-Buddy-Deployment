@@ -13,6 +13,8 @@ flask-bcrypt = "*"
 sqlalchemy-serializer = "*"
 faker = "*"
 flask-jwt-extended = "*"
+gunicorn = "*"
+eventlet = "*"
 
 [dev-packages]
 
