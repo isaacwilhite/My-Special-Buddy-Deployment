@@ -11,11 +11,9 @@ const UserHome = () => {
 
 
   const handleLogout = () => {
-    // Remove the JWT token (or other authentication token) from local storage
-    localStorage.removeItem('jwt_token'); // Adjust the key if different
+    localStorage.removeItem('jwt_token'); 
     localStorage.removeItem('chatUser')
     setChatUser(null)
-    // Navigate the user to the home page or login page
     navigate('/');
   };
 

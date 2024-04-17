@@ -27,8 +27,6 @@ const VolunteerProfileEdit = () => {
     setSnackbarOpen(true);
   };
   useEffect(() => {
-    // Fetch current user data from the server or context
-    // and then set it as initial form values
     setInitialValues({
       name: chatUser.userName,
       bio: chatUser.userBio,
@@ -40,10 +38,8 @@ const VolunteerProfileEdit = () => {
     initialValues: initialValues,
     enableReinitialize: true,
     validationSchema: Yup.object({
-      // Add your validation schema here
     }),
     onSubmit: (values) => {
-      // Send PUT or PATCH request to update user information
       fetch(`/volunteer`, {
         method: 'PATCH',
         headers: {
@@ -54,7 +50,6 @@ const VolunteerProfileEdit = () => {
       })
       .then(response => response.json())
       .then(data => {
-        // Transform the data to the expected format
         const updatedChatUser = {
           ...chatUser,
           userName: data.name,
@@ -62,7 +57,6 @@ const VolunteerProfileEdit = () => {
           userLocation: data.location
         };
       
-        // Update the context with new user data
         setChatUser(updatedChatUser);
         handleSuccess("Profile Updated")
       })
@@ -85,8 +79,6 @@ const VolunteerProfileEdit = () => {
         if (!response.ok) {
           throw new Error('Error deleting account');
         }
-        // Handle logout and redirect here
-        // For instance, clear local storage and redirect to login page
         localStorage.clear();
         handleSuccess("Account Deleted")
         navigate('/');

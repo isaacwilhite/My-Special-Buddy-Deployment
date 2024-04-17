@@ -45,7 +45,7 @@ const UserLogin = () => {
       })
       .then(response => response.json())
       .then(data => {
-        localStorage.setItem('jwt_token', data.token); // Assuming the token is in data.token
+        localStorage.setItem('jwt_token', data.token); 
         setChatUser({ userType: 'user', userId: data.user.id, userName: data.user.name, userBio: data.user.bio, userLocation: data.user.location, childName: data.user.child_name, activities: data.user.favorite_activities })
         navigate('/user_home');
       })

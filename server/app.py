@@ -27,16 +27,14 @@ from app_setup import app, db, api, socketio, emit, disconnect, join_room
 
 db.init_app(app)
 
-# Ensure consistent session key
 USER_SESSION_KEY = 'current_user'
 VOLUNTEER_SESSION_KEY = 'current_volunteer'
 
 
 def decode_jwt(token):
     try:
-        # This will automatically check if the token is valid
         decoded_token = decode_token(token)
-        return decoded_token['sub']  # 'sub' is typically the user ID
+        return decoded_token['sub']  
     except Exception as e:
         print(f"Invalid token: {e}")
         return None
@@ -67,7 +65,6 @@ class CreateUser(Resource):
             existing_user = User.query.filter_by(email=new_data.get('email')).first()
 
             if existing_user:
-                # Email already exists, return an error response
                 return {'Error': 'Email already in use'}, 400
             new_user = User(
                 email=new_data.get('email'),
@@ -152,15 +149,12 @@ class UsersById(Resource):
     @jwt_required()
     def patch(self):
         try:
-            # Get user ID from the JWT token
             user_id = get_jwt_identity()
 
-            # Find the user in the database
             user = User.query.get(user_id)
             if not user:
                 return {'Error': 'User not found'}, 404
 
-            # Get the updated data from the request
             data = request.get_json()
             user.name = data.get('name', user.name)
             user.child_name = data.get('child_name', user.child_name)
@@ -168,10 +162,8 @@ class UsersById(Resource):
             user.location = data.get('location', user.location)
             user.favorite_activities = data.get('favorite_activities', user.favorite_activities)
 
-            # Commit the changes to the database
             db.session.commit()
 
-            # Return the updated user data
             return {
                 'id': user.id,
                 'name': user.name,
@@ -195,7 +187,6 @@ class UsersById(Resource):
         ChatRoom.query.filter((ChatRoom.user_id == user.id) | (ChatRoom.volunteer_id == user.id)).delete()
         Message.query.filter((Message.user_id == user.id) | (Message.volunteer_id == user.id)).delete()
 
-        # Delete the user
         db.session.delete(user)
         db.session.commit()
         return {'Message': 'User and associated chat rooms deleted successfully'}, 200
@@ -212,13 +203,11 @@ class Volunteers(Resource):
 
             volunteers = Volunteer.query.filter_by(location=user.location).all()
 
-            # Debugging print statement
             volunteers_dict = [v.to_dict() for v in volunteers]
             print("Volunteers dict:", volunteers_dict)
 
             return jsonify(volunteers_dict)
         except Exception as e:
-            # Print full traceback for detailed error information
             import traceback
             traceback.print_exc()
             return {'Error': f'Could not fetch volunteer data: {str(e)}'}, 400
@@ -231,7 +220,7 @@ class Volunteers(Resource):
             db.session.commit()
             return make_response(new_volunteer.to_dict(), 201)
         except Exception as e:
-            app.logger.error(f"Error fetching volunteers: {e}")  # Log the error for debugging
+            app.logger.error(f"Error fetching volunteers: {e}")  
             return make_response({'Error': f'Could not create new volunteer. {str(e)}'}, 400)
 
 class VolunteersById(Resource):
@@ -245,24 +234,19 @@ class VolunteersById(Resource):
     @jwt_required()
     def patch(self):
         try:
-            # Get user ID from the JWT token
             volunteer_id = get_jwt_identity()
 
-            # Find the user in the database
             volunteer = Volunteer.query.get(volunteer_id)
             if not volunteer:
                 return {'Error': 'volunteer not found'}, 404
 
-            # Get the updated data from the request
             data = request.get_json()
             volunteer.name = data.get('name', volunteer.name)
             volunteer.bio = data.get('bio', volunteer.bio)
             volunteer.location = data.get('location', volunteer.location)
 
-            # Commit the changes to the database
             db.session.commit()
 
-            # Return the updated volunteer data
             return volunteer.to_dict(), 200
 
         except Exception as e:
@@ -279,7 +263,6 @@ class VolunteersById(Resource):
         ChatRoom.query.filter((ChatRoom.volunteer_id == volunteer.id) | (ChatRoom.user_id == volunteer.id)).delete()
         Message.query.filter((Message.volunteer_id == volunteer.id) | (Message.user_id == volunteer.id)).delete()
 
-        # Delete the user
         db.session.delete(volunteer)
         db.session.commit()
         return {'Message': 'Volunteer and associated chat rooms deleted successfully'}, 200
@@ -319,7 +302,6 @@ class CreateVolunteer(Resource):
             existing_volunteer = Volunteer.query.filter_by(email=new_data.get('email')).first()
 
             if existing_volunteer:
-                # Email already exists, return an error response
                 return {'Error': 'Email already in use'}, 400
             new_volunteer = Volunteer(
                 email=new_data.get('email'),
@@ -399,17 +381,14 @@ class ChatRoomsByVolunteerId(Resource):
 class MessagesByChatRoomId(Resource):
     @jwt_required()
     def get(self, chat_room_id):
-        # Ensure the user is part of the chat room
         user_id = get_jwt_identity()
         chat_room = ChatRoom.query.filter_by(id=chat_room_id).first()
 
         if not chat_room or (chat_room.user_id != user_id and chat_room.volunteer_id != user_id):
             return {"message": "Chat room not found or access denied"}, 404
 
-        # Fetch messages for the chat room
         messages = Message.query.filter_by(chatroom_id=chat_room_id).all()
 
-        # Prepare the response
         messages_data = [
             {
                 'id': message.id,
@@ -470,14 +449,12 @@ def handle_send_message(data):
 
     chat_room = ChatRoom.query.get(chat_room_id)
     if chat_room:
-        # Save message to the database
         new_message = Message(content=message_content, user_id=user_id, sender_type=sender_type, volunteer_id=volunteer_id, chatroom_id=chat_room_id, timestamp=datetime.utcnow())
         db.session.add(new_message)
         db.session.commit()
 
         print(new_message)
         new_message_id = new_message.id
-        # Emit the message to the specific chat room
         emit('new_message', {'id': new_message_id, 'content': message_content, "sender_type": sender_type}, room=data['chat_room_id'])
         print(message_content)
 

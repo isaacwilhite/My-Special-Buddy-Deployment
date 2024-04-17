@@ -9,10 +9,8 @@ const VolunteerHome = () => {
   const { chatUser, clearChatUser } = useChatContext()
 
   const handleLogout = () => {
-    // Remove the JWT token (or other authentication token) from local storage
-    localStorage.removeItem('jwt_token'); // Adjust the key if different
+    localStorage.removeItem('jwt_token'); 
     clearChatUser()
-    // Navigate the user to the home page or login page
     navigate('/');
   };
 

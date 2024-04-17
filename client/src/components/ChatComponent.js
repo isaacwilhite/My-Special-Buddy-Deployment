@@ -11,7 +11,6 @@ const ChatComponent = () => {
     const fetchChatRooms = async () => {
         const token = localStorage.getItem('jwt_token');
         if (!token) {
-            // Handle the case where there is no token
             console.log("No JWT token found");
             return;
         }

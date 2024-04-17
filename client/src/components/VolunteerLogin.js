@@ -44,7 +44,7 @@ const handleError = (message) => {
       })
       .then(response => response.json())
       .then(data => {
-        localStorage.setItem('jwt_token', data.token); // Assuming the token is in data.token
+        localStorage.setItem('jwt_token', data.token); 
         setChatUser({ userType: 'volunteer', userId: data.volunteer.id, userName: data.volunteer.name, userBio: data.volunteer.bio, userLocation: data.volunteer.location })
         navigate('/volunteer_home');
       })

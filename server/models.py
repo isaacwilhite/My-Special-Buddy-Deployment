@@ -14,7 +14,7 @@ class User(db.Model, SerializerMixin):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String)
     email = db.Column(db.String)
-    _password_hash = db.Column(db.String)  # Renamed to avoid conflict
+    _password_hash = db.Column(db.String)  
     bio = db.Column(db.String)
     location = db.Column(db.String)
     favorite_activities = db.Column(db.String, nullable=True)
@@ -60,7 +60,6 @@ class Volunteer(db.Model, SerializerMixin):
             "bio": self.bio,
             "location": self.location,
             "created_at": self.created_at.isoformat() if self.created_at else None
-            # Convert datetime to string
         }
 
     @hybrid_property
@@ -87,7 +86,7 @@ class ChatRoom(db.Model, SerializerMixin):
     volunteer = db.relationship("Volunteer", backref="chatroom")
     messages = db.relationship('Message', cascade='all, delete-orphan', backref='chatroom')
     def to_dict(self):
-        if self.user_id == user_id:  # If the logged-in user is the user of the chat room
+        if self.user_id == user_id:  
             other_party_name = self.volunteer.name
         else:
             other_party_name = self.user.name

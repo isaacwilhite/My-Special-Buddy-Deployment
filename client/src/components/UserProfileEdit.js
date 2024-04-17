@@ -30,8 +30,6 @@ const UserProfileEdit = () => {
   };
   useEffect(() => {
     console.log(chatUser)
-    // Fetch current user data from the server or context
-    // and then set it as initial form values
     setInitialValues({
       name: chatUser.userName,
       child_name: chatUser.childName,
@@ -45,10 +43,8 @@ const UserProfileEdit = () => {
     initialValues: initialValues,
     enableReinitialize: true,
     validationSchema: Yup.object({
-      // Add your validation schema here
     }),
     onSubmit: (values) => {
-      // Send PUT or PATCH request to update user information
       fetch(`/user`, {
         method: 'PATCH',
         headers: {
@@ -59,7 +55,6 @@ const UserProfileEdit = () => {
       })
       .then(response => response.json())
       .then(data => {
-        // Transform the data to the expected format
         const updatedChatUser = {
           ...chatUser,
           userName: data.name,
@@ -69,7 +64,6 @@ const UserProfileEdit = () => {
           activities: data.favorite_activities
         };
       
-        // Update the context with new user data
         setChatUser(updatedChatUser);
         handleSuccess("Profile Updated")
       })
@@ -92,8 +86,6 @@ const UserProfileEdit = () => {
         if (!response.ok) {
           throw new Error('Error deleting account');
         }
-        // Handle logout and redirect here
-        // For instance, clear local storage and redirect to login page
         localStorage.clear();
         handleSuccess("Account Deleted")
         navigate('/');

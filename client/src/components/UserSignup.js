@@ -67,7 +67,6 @@ const UserSignup = () => {
         return response.json();
       })
       .then(() => {
-        // Continue with the login process as the signup was successful
         return fetch('/login/user', {
           method: 'POST',
           headers: {
@@ -88,12 +87,10 @@ const UserSignup = () => {
         navigate('/user_home')
       })
       .catch(error => {
-        // Handle specific or general errors
         console.error("Error:", error.message);
         if (error.message === 'Email already in use') {
           handleError('This email is already in use');
         } else {
-          // Handle other errors, maybe set a global form error
         }
       })
       .finally(() => {

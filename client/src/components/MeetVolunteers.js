@@ -37,22 +37,22 @@ const MeetVolunteers = () => {
             handleError('Network response was not okay!');
           }
           const data = await response.json();
-          setVolunteers(data); // Set the fetched volunteers to state
+          setVolunteers(data); 
         } catch (error) {
           handleError(`Error fetching Buddies: ${error}`);
         }
       };
 
-      fetchVolunteers(); // Call the function to fetch volunteers
+      fetchVolunteers(); 
     }, []);
     const onCreateChatRoom = async (volunteerId) => {
-      const token = localStorage.getItem('jwt_token'); // Retrieve the stored token
+      const token = localStorage.getItem('jwt_token'); 
       try {
         const response = await fetch('/create_chat_room', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
-            'Authorization': `Bearer ${token}` // Include the token in the Authorization header
+            'Authorization': `Bearer ${token}` 
           },
           body: JSON.stringify({ volunteer_id: volunteerId }),
         });
@@ -65,12 +65,12 @@ const MeetVolunteers = () => {
         navigate(`/chat/${chatRoom.chat_room_id}`, { state: { volunteerId: volunteerId }})
       } catch (error) {
         handleError(`Failed to create chat room: ${error}`);
-        // Handle errors, such as displaying a notification to the user
+        
       }
     };
 
     const handleBackToHome = () => {
-      navigate('/user_home'); // Navigate to User Home page
+      navigate('/user_home'); 
     };
 
     const handleCloseSnackbar = () => {

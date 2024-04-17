@@ -33,7 +33,6 @@ const ChatRoom = () => {
       transports: ['websocket'] // Force WebSocket transport
     });
 
-    // Function to set up socket event listeners
     const setupSocketListeners = () => {
       socketRef.current.on('new_message', (newMessageData) => {
         const newMessage = newMessageData.message ? { content: newMessageData.message } : newMessageData;
@@ -80,7 +79,6 @@ const ChatRoom = () => {
     // console.log(chatRoomId)
     // console.log(volunteerId)
     if (messageInput.trim()) {
-        // Emitting the message event with necessary data
         socketRef.current.emit('send_message', { 
         chat_room_id: chatRoomId, 
         message: messageInput,

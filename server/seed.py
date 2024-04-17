@@ -66,7 +66,6 @@ if __name__ == '__main__':
         db.drop_all()
         db.create_all()
         print("Starting seed...")
-        # Seed code goes here
         create_users()
         create_volunteers()
         print("Seeding finished!")
